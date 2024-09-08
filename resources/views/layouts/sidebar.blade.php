@@ -31,11 +31,17 @@
           </ul>
         </li> --}}
 
-        <li class="{{ Request::is('admin/keywords') ? 'active' : '' }}">
+        {{-- <li class="{{ Request::is('admin/keywords') ? 'active' : '' }}">
           <a href="{{ url('admin/keywords') }}">
             <i class="fa fa-cog"></i> <span>Keyword</span>
           </a>
-        </li>
+        </li> --}}
+
+        <li class="{{ Route::is('services.index') || Route::is('services.*') ? 'active' : '' }}">
+            <a href="{{ route('services.index') }}">
+              <i class="fa fa-briefcase"></i> <span>Services</span>
+            </a>
+          </li>
 
       </ul>
     </section>

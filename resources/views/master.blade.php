@@ -60,8 +60,13 @@
     });
 
     @if(Session::has('message'))
-            swal("Good job!", "{{ Session::get('message') }}", "success")
+            swal("{{$moduleName}}", "{{ Session::get('message') }}", "success")
     @endif
+  });
+
+  $(function () {
+    //Add text editor
+    $("#ck-editor").wysihtml5();
   });
  </script>
 </body>

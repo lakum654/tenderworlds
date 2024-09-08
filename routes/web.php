@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\admin\KeywordController;
 use App\Http\Controllers\admin\QuestionController;
+use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\SitemapController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +28,9 @@ Route::get('/post/{id}/{slug}', [HomeController::class, 'single'])->name('front.
 //     return view('auth/login');
 // })->middleware('guest');
 
-Auth::routes();
+Route::prefix('admin')->group(function () {
+    Auth::routes();
+});
 
 Route::view('/admin','admin.index');
 Route::group(['prefix' => 'admin/keywords', 'middleware' => ['auth'],], function () {
@@ -38,4 +42,11 @@ Route::group(['prefix' => 'admin/keywords', 'middleware' => ['auth'],], function
     Route::put('/update/{id}', [KeywordController::class, 'update'])->name('keywords.update');
     Route::get('/delete/{id}', [KeywordController::class, 'delete'])->name('keywords.delete');
     Route::get('/changeStatus/{id}', [KeywordController::class, 'changeStatus'])->name('keywords.changeStatus');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth'],], function () {
+    Route::get('services/data', [ServiceController::class, 'getData'])->name('services.data');
+    Route::get('/delete/{id}', [ServiceController::class, 'destroy'])->name('services.delete');
+    Route::get('/changeStatus/{id}', [ServiceController::class, 'changeStatus'])->name('services.changeStatus');
+    Route::resource('services',ServiceController::class);
 });
