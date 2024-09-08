@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\KeywordController;
+use App\Http\Controllers\admin\ProfileController;
 use App\Http\Controllers\admin\QuestionController;
 use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\SitemapController;
@@ -32,7 +33,7 @@ Route::prefix('admin')->group(function () {
     Auth::routes();
 });
 
-Route::view('/admin','admin.index');
+Route::view('/admin', 'admin.index');
 Route::group(['prefix' => 'admin/keywords', 'middleware' => ['auth'],], function () {
     Route::get('/', [KeywordController::class, 'index'])->name('keywords');
     Route::get('getKeywordsData', [KeywordController::class, 'getData'])->name('getKeywordsData');
@@ -48,5 +49,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth'],], function () {
     Route::get('services/data', [ServiceController::class, 'getData'])->name('services.data');
     Route::get('/delete/{id}', [ServiceController::class, 'destroy'])->name('services.delete');
     Route::get('/changeStatus/{id}', [ServiceController::class, 'changeStatus'])->name('services.changeStatus');
-    Route::resource('services',ServiceController::class);
+    Route::resource('services', ServiceController::class);
+});
+
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth'],], function () {
+    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.index');
+    Route::put('profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('profile/password', [ProfileController::class, 'showPasswordForm'])->name('profile.password.form');
+    Route::put('profile/password/{id}', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
 });
